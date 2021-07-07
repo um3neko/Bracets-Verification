@@ -67,9 +67,6 @@ namespace Bracets_Verification
         /// <returns></returns>
         private List<int> checkContainsUnmatchedBrackets(string stringToCheck)
         {
-            int count1 = 0; // счетчик для { }
-            int count2 = 0; // счетчик для ( )
-            int count3 = 0; // счетчик для [ ]
             Stack<int> unmatchedBracketsIndexesFirstType = new Stack<int>();   // стэк нужен для того, чтоб проследить все ли открывающие скобки имеют закрывающую скобку.
             Stack<int> unmatchedBracketsIndexesSecondType = new Stack<int>();  // если стэк оказывается в конце пустой, проверка на то, что строка не содержит непарных скобок выполнена
             Stack<int> unmatchedBracketsIndexesThirdType = new Stack<int>();
@@ -84,12 +81,12 @@ namespace Bracets_Verification
                     switch (stringToCheck[i])
                 {
                     case '{':
-                        count1++;
+                        
                         unmatchedBracketsIndexesFirstType.Push(i); // добавляю в очередь индекс открывающей скобки, если он не покинет очередь, значит скобка незакрывающаяся
                         break;
 
                     case '}':
-                        count1--;
+                        
                         try
                         {
                             unmatchedBracketsIndexesFirstType.Pop(); 
@@ -106,11 +103,11 @@ namespace Bracets_Verification
                         break;
 
                     case '(':
-                        count2++;
+                        
                         unmatchedBracketsIndexesSecondType.Push(i);
                         break;
                     case ')':
-                        count2--;
+                        
                         try
                         {
                             unmatchedBracketsIndexesSecondType.Pop();
@@ -123,11 +120,11 @@ namespace Bracets_Verification
                         break;
 
                     case '[':
-                        count3++;
+                        
                         unmatchedBracketsIndexesThirdType.Push(i);
                         break;
                     case ']':
-                        count3--;
+                        
                         try
                         {
                             unmatchedBracketsIndexesThirdType.Pop();

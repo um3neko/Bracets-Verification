@@ -7,12 +7,9 @@ namespace Bracets_Verification
         static void Main(string[] args)
         {
             BracketsVerification bracketsVerification = new BracketsVerification();
-
-            string b = "()(){]()()()()";
-            
+            string b = "()[]";
             bracketsVerification.checkInputValidation(b);
             Console.ReadKey();
-            
         }
     }
 }
