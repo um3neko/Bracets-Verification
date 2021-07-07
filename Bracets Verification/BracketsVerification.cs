@@ -5,9 +5,13 @@ using System.Text;
 namespace Bracets_Verification 
 {
      public class BracketsVerification
-     {
-        private static string allowableValues = "{}()[]";
-
+     {  
+        private static string _allowableValues = "{}()[]";
+        /// <summary>
+        /// приложение реализует класс BracketsVerification одним публичным методом
+        /// </summary>
+        /// <param name="stringToCheck"></param>
+        /// <returns></returns>
         public List<int> checkInputValidation(string stringToCheck)
         {
             Console.WriteLine(stringToCheck);
@@ -15,8 +19,11 @@ namespace Bracets_Verification
             checkInputContainsNonBracketsValue(stringToCheck);
             return checkContainsUnmatchedBrackets(stringToCheck);
 
-        } 
-        //метод для проверки строки на пустоту, если она пустая - метод генерирует исключение.
+        }
+        /// <summary>
+        /// метод для проверки строки на пустоту, если она пустая - метод генерирует исключение.
+        /// </summary>
+        /// <param name="stringToCheck"></param>
         private void checkInputNotEmpty(string stringToCheck)
         {
             if (String.IsNullOrEmpty(stringToCheck))
@@ -25,13 +32,18 @@ namespace Bracets_Verification
                 throw new ArgumentException($"String is empty");
             }  
         }
-        //метод для проверки строки на недопустимые символы, если она есть - метод генерирует исключение и уведомляет о недопустимых символах.
+
+        /// <summary>
+        /// метод для проверки строки на недопустимые символы, если она есть -
+        /// метод генерирует исключение и уведомляет о недопустимых символах.
+        /// </summary>
+        /// <param name="stringToCheck"></param>
         private void checkInputContainsNonBracketsValue(string stringToCheck)
         {
             string unexpectedCharacters = ""; //строка которая будет содержать недопустимые символы, чтоб вывести их в консоль
             for (int i = 0; i < stringToCheck.Length; i++)
             {
-                if (!allowableValues.Contains(stringToCheck[i]))
+                if (!_allowableValues.Contains(stringToCheck[i]))
                 {
                     unexpectedCharacters += "'" + stringToCheck[i] + "'" + " ";
                 }
@@ -43,11 +55,16 @@ namespace Bracets_Verification
             }
                 
         }
-        //метод для проверки строки на то, что все открытые скобки имеют закрывающие скобки, если такие скобки присутствуют,
-        //метод возвращает список индексов всех несбалансированных скобок начиная с нуля, если все скобки имеют закрывающую скобку, метод возвращает список с индексом -1.
-        //В тестовом задание есть неточность, так как в части Functional Description сказано " Output: integer value returns  -1 - when balanced and number of bracket when not balanced "
-        //но в части "Acceptance Criteria: " otherwise print - NOT BALANCED and return a number of not balanced brackets in the line. " а именно return number of brackets 
-        // и мною было принято решение лучше возвращать list of integer.
+        
+        /// <summary>
+        /// метод для проверки строки на то, что все открытые скобки имеют закрывающие скобки, если такие скобки присутствуют,
+        /// метод возвращает список индексов всех несбалансированных скобок начиная с нуля, если все скобки имеют закрывающую скобку, метод возвращает список с индексом -1.
+        /// В тестовом задание есть неточность, так как в части Functional Description сказано " Output: integer value returns  -1 - when balanced and number of bracket when not balanced "
+        /// но в части "Acceptance Criteria: " otherwise print - NOT BALANCED and return a number of not balanced brackets in the line. " а именно return number of brackets 
+        ///  и мною было принято решение лучше возвращать list of integer.
+        /// </summary>
+        /// <param name="stringToCheck"></param>
+        /// <returns></returns>
         private List<int> checkContainsUnmatchedBrackets(string stringToCheck)
         {
             int count1 = 0; // счетчик для { }
