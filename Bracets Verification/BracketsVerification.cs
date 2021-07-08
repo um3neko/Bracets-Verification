@@ -7,6 +7,8 @@ namespace Bracets_Verification
      public class BracketsVerification
      {  
         private static string _allowableValues = "{}()[]";
+        
+
         /// <summary>
         /// приложение реализует класс BracketsVerification одним публичным методом
         /// </summary>
@@ -17,7 +19,9 @@ namespace Bracets_Verification
             Console.WriteLine(stringToCheck);
             checkInputNotEmpty(stringToCheck);
             checkInputContainsNonBracketsValue(stringToCheck);
-            return checkContainsUnmatchedBrackets(stringToCheck);
+            
+            return checkBalance(stringToCheck);
+
 
         }
         /// <summary>
@@ -65,12 +69,10 @@ namespace Bracets_Verification
         /// </summary>
         /// <param name="stringToCheck"></param>
         /// <returns></returns>
-        private List<int> checkContainsUnmatchedBrackets(string stringToCheck)
+        private List<int> checkBalance(string stringToCheck)
         {
-            Stack<int> unmatchedBracketsIndexesFirstType = new Stack<int>();   // стэк нужен для того, чтоб проследить все ли открывающие скобки имеют закрывающую скобку.
-            Stack<int> unmatchedBracketsIndexesSecondType = new Stack<int>();  // если стэк оказывается в конце пустой, проверка на то, что строка не содержит непарных скобок выполнена
-            Stack<int> unmatchedBracketsIndexesThirdType = new Stack<int>();
-
+            Stack<char> unmatchedBracketsIndexes = new Stack<char>(); // стэк нужен для того, чтоб проследить все ли открывающие скобки имеют закрывающую скобку.
+                                                                    // если стэк оказывается в конце пустой, проверка на то, что строка не содержит непарных скобок выполнена
 
             List<int> listForReturningByApplication = new List<int>(); // по заданию, нужно вернуть number of brackets
                                                                        // " otherwise print - NOT BALANCED and return a number of not balanced brackets in the line. "
@@ -81,19 +83,27 @@ namespace Bracets_Verification
                     switch (stringToCheck[i])
                 {
                     case '{':
-                        
-                        unmatchedBracketsIndexesFirstType.Push(i); // добавляю в очередь индекс открывающей скобки, если он не покинет очередь, значит скобка незакрывающаяся
+
+                        unmatchedBracketsIndexes.Push('{'); // добавляю в стэк индекс открывающей скобки, если он не покинет очередь, значит скобка незакрывающаяся
                         break;
 
                     case '}':
-                        
                         try
                         {
-                            unmatchedBracketsIndexesFirstType.Pop(); 
+                            string test = "";                                   //создаем пустую строку 
+                            test += unmatchedBracketsIndexes.Pop();             //снимаем его с верхушки и добавляем к нему
+                            test += stringToCheck[i];                           //добавляем к нему текущий элемент
+                                                                                //идея в том, что если у нас идет строка ([)] то следующий if проверил содержит ли 
+                                                                                //наша переменная _allowedValues подстроку [), если она ее не содержит
+                            if (!_allowableValues.Contains(test))               //тогда скобки не получаются не сбалансированны и в список индексов мы заносим индекс текущего элемента 
+                            {
+                                listForReturningByApplication.Add(i+1);
+                            }
+                            
                         }
                         catch 
                         {
-                            listForReturningByApplication.Add(i);
+                            listForReturningByApplication.Add(i + 1);
                             // если стэк пустой, при попытке удаления оттуда закрывающей скобки
                             // она автоматически попадает в список несбалансированых скобок.
                             // Тоесть если строка начнется с закрывающейся скобки } то, она будет несбалансированой. 
@@ -103,74 +113,74 @@ namespace Bracets_Verification
                         break;
 
                     case '(':
-                        
-                        unmatchedBracketsIndexesSecondType.Push(i);
+
+                        unmatchedBracketsIndexes.Push('(');
                         break;
                     case ')':
                         
                         try
                         {
-                            unmatchedBracketsIndexesSecondType.Pop();
+                            string test = "";
+                            test += unmatchedBracketsIndexes.Pop();
+                            test += stringToCheck[i];
+                            if (!_allowableValues.Contains(test))
+                            {
+                                listForReturningByApplication.Add(i + 1);
+                            }
                         }
                         catch 
                         {
-                            listForReturningByApplication.Add(i);
-                            
+                            listForReturningByApplication.Add(i + 1);
                         }
                         break;
 
                     case '[':
-                        
-                        unmatchedBracketsIndexesThirdType.Push(i);
+
+                        unmatchedBracketsIndexes.Push('[');
                         break;
                     case ']':
-                        
                         try
                         {
-                            unmatchedBracketsIndexesThirdType.Pop();
+                            string test = "";
+                            test += unmatchedBracketsIndexes.Pop();
+                            test += stringToCheck[i];
+                            if (!_allowableValues.Contains(test))
+                            {
+                                listForReturningByApplication.Add(i + 1);
+                            }
                         }
                         catch 
                         {
-                            listForReturningByApplication.Add(i);
-                            
+                            listForReturningByApplication.Add(i + 1);
                         }
                         break; 
                 }
             }
             
-            // три цикла нужны для проверки, не остались ли в конце прошлого цикла неудаленные из стека индексы
-            
-            foreach (var e in unmatchedBracketsIndexesFirstType)
-            {
-                listForReturningByApplication.Add(e);
-            }
-            foreach (var e in unmatchedBracketsIndexesSecondType)
-            {
-                listForReturningByApplication.Add(e);
-            }
-            foreach (var e in unmatchedBracketsIndexesThirdType)
-            {
-                listForReturningByApplication.Add(e);
-            }
             if (listForReturningByApplication.Count != 0)
             {
+                                                                    
                 Console.Write($"NOT BALANCED (");
                 foreach (var e in listForReturningByApplication)
                 {
                     Console.Write(e + " ");
                 }
                 Console.Write(")");
+                
                 return listForReturningByApplication;
+
             }
             else
             {
                 Console.WriteLine("BALANCED");
                 listForReturningByApplication.Add(-1);
+                
                 return listForReturningByApplication;
             }
               
         }
        
+        
      }
 }
 

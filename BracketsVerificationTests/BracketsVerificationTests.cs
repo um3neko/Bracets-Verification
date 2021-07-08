@@ -49,17 +49,7 @@ namespace BracketsVerificationTests
             actual = verificator.checkInputValidation(str);
             Assert.AreEqual(expected, actual);
         }
-        [Test]
-        public void check_Input_Validation_For_Not_Balanced_IString()
-        {
-            string str = "){([])}";
-            List<int> expected = new List<int>();
-            expected.Add(-1);
-            Bracets_Verification.BracketsVerification verificator = new Bracets_Verification.BracketsVerification();
-            List<int> actual = new List<int>();
-            actual = verificator.checkInputValidation(str);
-            Assert.AreNotEqual(expected, actual);
-        }
+        
         [Test]
         public void check_Input_Validation_For_Balanced_String_2()
         {
@@ -82,7 +72,43 @@ namespace BracketsVerificationTests
             actual = verificator.checkInputValidation(str);
             Assert.AreEqual(expected, actual);
         }
-
+        [Test]
+        public void check_Input_Validation_For_Not_Balanced_IString()
+        {
+            string str = "){([])}";
+            List<int> expected = new List<int>();
+            expected.Add(1);
+            Bracets_Verification.BracketsVerification verificator = new Bracets_Verification.BracketsVerification();
+            List<int> actual = new List<int>();
+            actual = verificator.checkInputValidation(str);
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void check_Input_Validation_For_Not_Balanced_IString2()
+        {
+            string str = "{(})";
+            List<int> expected = new List<int>();
+            expected.Add(3);
+            expected.Add(4);
+            Bracets_Verification.BracketsVerification verificator = new Bracets_Verification.BracketsVerification();
+            List<int> actual = new List<int>();
+            actual = verificator.checkInputValidation(str);
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void check_Input_Validation_For_Not_Balanced_IString3()
+        {
+            string str = "([)]{(})[";
+            List<int> expected = new List<int>();
+            expected.Add(3);
+            expected.Add(4);
+            expected.Add(7);
+            expected.Add(8);
+            Bracets_Verification.BracketsVerification verificator = new Bracets_Verification.BracketsVerification();
+            List<int> actual = new List<int>();
+            actual = verificator.checkInputValidation(str);
+            Assert.AreEqual(expected, actual);
+        }
 
     }
 }
